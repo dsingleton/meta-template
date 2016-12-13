@@ -208,6 +208,14 @@ describe('default format (nunjucks -> erb)', function() {
     );
   });
 
+
+  describe('filter aliases', function() {
+    assert.formatEquals(
+      "foo {{ bar | safe }} baz",
+      "foo <%= raw(bar) %> baz"
+    );
+  });
+
   describe('include nodes', function() {
     assert.formatEquals(
       "{% include 'foo' %}",

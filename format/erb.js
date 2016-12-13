@@ -13,7 +13,8 @@ const Include = function(node) {
 };
 
 const Filter = function(node) {
-  if (this.node(node.name) == 'default') {
+  const name = this.filterAliasMap[node.name.value] || node.name.value;
+  if (name == 'default') {
     let firstArg = node.args.children.shift()
     return [
       this.node(firstArg), '.presence || ',
@@ -21,7 +22,7 @@ const Filter = function(node) {
     ].join('');
   }
   return [
-      this.node(node.name),
+      name,
       '(',
       node.args.children.map(arg => this.node(arg)).join(', '),
       ')'
@@ -77,6 +78,10 @@ module.exports = formatFactory({
 
   quote:        abs.quote,
   accessor:     abs.accessor,
+
+  filterAliasMap: {
+    'safe': 'raw'
+  },
 
   Add:          abs.Operator('+'),
   Compare:      abs.Compare,
