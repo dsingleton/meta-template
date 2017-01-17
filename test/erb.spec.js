@@ -194,6 +194,20 @@ describe('default format (nunjucks -> erb)', function() {
     );
   });
 
+  describe('apply filters', function() {
+    assert.formatEquals(
+      '{{ foo|bar }}',
+      '<%= bar(foo) %>'
+    );
+  });
+
+  describe('should support custom filter logic', function () {
+    assert.formatEquals(
+      "{{ foo|default('bar') }}",
+      "<%= foo.presence || 'bar' %>"
+    );
+  });
+
   describe('include nodes', function() {
     assert.formatEquals(
       "{% include 'foo' %}",

@@ -13,6 +13,13 @@ const Include = function(node) {
 };
 
 const Filter = function(node) {
+  if (this.node(node.name) == 'default') {
+    let firstArg = node.args.children.shift()
+    return [
+      this.node(firstArg), '.presence || ',
+      node.args.children.map(arg => this.node(arg)).join(', ')
+    ].join('');
+  }
   return [
       this.node(node.name),
       '(',
