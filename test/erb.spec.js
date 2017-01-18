@@ -26,7 +26,7 @@ describe('default format (nunjucks -> erb)', function() {
     );
     assert.formatEquals(
       "foo {{ bar['baz qux'][1].x }}",
-      "foo <%= bar['baz qux'][1].x %>"
+      "foo <%= bar['baz qux'][1]['x'] %>"
     );
   });
 
@@ -41,7 +41,7 @@ describe('default format (nunjucks -> erb)', function() {
     );
     assert.formatEquals(
       "foo {{ bar | qux(1, 'quux', bar.baz[0]) }} baz",
-      "foo <%= qux(bar, 1, 'quux', bar.baz[0]) %> baz"
+      "foo <%= qux(bar, 1, 'quux', bar['baz'][0]) %> baz"
     );
   });
 
@@ -52,7 +52,7 @@ describe('default format (nunjucks -> erb)', function() {
     );
     assert.formatEquals(
       "{% for x in items.x['foo bar'].qux %}la {{ x[0] }}{% endfor %}",
-      "<% items.x['foo bar'].qux.each do |x| %>la <%= x[0] %><% end %>"
+      "<% items['x']['foo bar']['qux'].each do |x| %>la <%= x[0] %><% end %>"
     );
   });
 
@@ -223,7 +223,7 @@ describe('default format (nunjucks -> erb)', function() {
     );
     assert.formatEquals(
       "{% include foo.bar %}",
-      "<%= render partial: foo.bar %>"
+      "<%= render partial: foo['bar'] %>"
     );
     assert.formatEquals(
       "{% include foo + '.html' %}",

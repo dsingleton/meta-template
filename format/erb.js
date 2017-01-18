@@ -57,6 +57,13 @@ const Set = function(node) {
   ].join('');
 };
 
+const accessor = function(symbol) {
+  const str = this.quote(symbol)
+  return /^[0-9'"]/.test(str)
+    ? '[' + str + ']'
+    : "['" + str + "']";
+};
+
 module.exports = formatFactory({
   WS:           ' ',
 
@@ -77,7 +84,7 @@ module.exports = formatFactory({
   P_WORD:       abs.P_WORD,
 
   quote:        abs.quote,
-  accessor:     abs.accessor,
+  accessor:     accessor,
 
   filterAliasMap: {
     'safe': 'raw'
